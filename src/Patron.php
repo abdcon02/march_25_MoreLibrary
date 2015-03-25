@@ -94,29 +94,34 @@
             $GLOBALS['DB']->exec("DELETE FROM patrons WHERE id = {$this->getId()};");
         }
 
-        function getCopy()
+        function getCheckouts()
         {
             $query = $GLOBALS['DB']->query("SELECT copies.* FROM
                 patrons JOIN checkout ON (patrons.id = checkout.patron_id)
                 JOIN copies ON (checkout.copy_id = copies.id)
-                WHERE patrons.id={$this->getId()} AND in_library = 1;");
+                WHERE patrons.id={$this->getId()};");
 
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             $copy_to_checkout = array();
             foreach($result as $book) {
-                $name = $book['name'];
-                $id = $book['id'];
-                $new_book = new Book($name, $id);
-                array_push($copies_to_checkout, $new_book);
+                $name = $book['book_name'];
+                array_push($copies_checked_out, $name);
             }
 
-            return $copies_to_checkout;
+            return $copies_checked_out;
         }
 
-
-        function addCopy($copy)
+// Run this method on a Book that has been created
+        function checkoutCopy($book)
         {
-            $GLOBALS['DB']->exec("INSERT INTO books_authors (author_id, book_id) VALUES ({$this->getId()}, {$book->getId()});");
+            $books = $GLOBALS['DB']->exec("SELECT * From copies where book_name = '{$book->getName()}' AND in_library = true;");
+
+            if(!empty($books)){
+                $copy = new Copy($book[0]['book_name'], $book[0]['id']);
+            }
+
+            $GLOBALS['DB']->exec("INSERT INTO checkout (patron_id, copy_id) VALUES ({$this->getId()}, {$copy->getId()});");
+            $GLOBALS['DB']->exec("UPDATE copies SET in_library = false WHERE id = {$copy->getId()};");
         }
 
     }

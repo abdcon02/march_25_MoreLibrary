@@ -6,7 +6,8 @@
     */
 
     require_once "src/Book.php";
-    require_once "src/Book.php";
+    require_once "src/Author.php";
+    require_once "src/Copy.php";
 
 
     $DB = new PDO('pgsql:host=localhost;dbname=library_test');
@@ -237,6 +238,22 @@
             $test_book->delete();
             //Assert
             $this->assertEquals([], $test_book->getAuthors());
+        }
+
+        function testSaveCopy()
+        {
+            //Arrange
+            $name = "Frenchie";
+            $test_author = new Book($name);
+            $test_author->save();
+
+            //Act
+            $copies = Copy::getAll();
+
+            $result = $copies[0]->getBookName();
+        //    var_dump($result);
+            //Assert
+            $this->assertEquals($name, $result);
         }
 
     }

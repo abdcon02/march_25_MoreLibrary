@@ -33,6 +33,7 @@
             $statement = $GLOBALS['DB']->query("INSERT INTO books (name) VALUES ('{$this->getName()}') RETURNING id;");
             $result = $statement ->fetch(PDO::FETCH_ASSOC);
             $this->setId($result['id']);
+
             $GLOBALS['DB']->exec("INSERT INTO copies (book_name, in_library) VALUES ('{$this->getName()}', true);");
         }
 
@@ -71,6 +72,7 @@
         {
             $GLOBALS['DB']->exec("UPDATE books SET name = '{$new_name}' WHERE id = {$this->getId()};");
             $this->setName($new_name);
+            $GLOBALS['DB']->exec("UPDATE copies SET book_name = '{$new_name}' WHERE book_name = {$this->getName()};");
         }
 
         function delete()
