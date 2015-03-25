@@ -21,11 +21,11 @@
         function test_GetName()
         {
             //Arrange
-            $name = "Dog Stuff";
-            $test_category = new Author($name);
+            $name = "Walt Whitman";
+            $test_author = new Author($name);
 
             //Act
-            $result = $test_category->getName();
+            $result = $test_author->getName();
 
             //Assert
             $this->assertEquals($name, $result);
@@ -34,13 +34,13 @@
         function test_SetName()
         {
             //Arrange
-            $name = "Home Stuff";
-            $test_category = new Author($name);
-            $new_name = "Work Stuff";
+            $name = "Dandy";
+            $test_author = new Author($name);
+            $new_name = "Terry";
 
             //Act
-            $test_category->setName($new_name);
-            $result = $test_category->getName();
+            $test_author->setName($new_name);
+            $result = $test_author->getName();
 
             //Assert
             $this->assertEquals($new_name, $result);
@@ -49,12 +49,12 @@
         function test_GetId()
         {
             //Arrange
-            $name = "Home Stuff";
+            $name = "Frank";
             $id = 1;
-            $test_category = new Author($name, $id);
+            $test_author = new Author($name, $id);
 
             //Act
-            $result = $test_category->getId();
+            $result = $test_author->getId();
 
             //Assert
             $this->assertEquals($id, $result);
@@ -63,14 +63,14 @@
         function test_SetId()
         {
             //Arrange
-            $name = "Home Stuff";
+            $name = "Bill";
             $id = 1;
-            $test_category = new Author($name, $id);
+            $test_author = new Author($name, $id);
             $new_id = 2;
 
             //Act
-            $test_category->setId($new_id);
-            $result = $test_category->getId();
+            $test_author->setId($new_id);
+            $result = $test_author->getId();
 
             //Assert
             $this->assertEquals($new_id, $result);
@@ -79,46 +79,42 @@
         function test_save()
         {
             //Arrange
-            $name = "Home Stuff";
-            $id = 1;
-            $test_category = new Author($name, $id);
+            $name = "Hemmingway";
+            $test_author = new Author($name);
 
             //Act
-            $test_category->save();
+            $test_author->save();
             $result = Author::getAll();
 
             //Assert
-            $this->assertEquals($test_category, $result[0]);
+            $this->assertEquals($test_author, $result[0]);
 
         }
 
         function test_getAll()
         {
             //Arrange
-            $name = "Home Stuff";
-            $id = 1;
-            $test_category1 = new Author($name, $id);
-            $test_category1->save();
+            $name = "Bogus";
+            $test_author = new Author($name);
+            $test_author->save();
 
-            $name2 = "Work Stuff";
-            $id2 = 2;
-            $test_category2 = new Author($name2, $id2);
-            $test_category2->save();
+            $name2 = "Wendy";
+            $test_author2 = new Author($name2);
+            $test_author2->save();
 
             //Act
             $result = Author::getAll();
 
             //Assert
-            $this->assertEquals([$test_category1, $test_category2], $result);
+            $this->assertEquals([$test_author, $test_author2], $result);
         }
 
         function test_deleteAll()
         {
             //Arrange
-            $name = "Home Stuff";
-            $id = 1;
-            $test_category = new Author($name, $id);
-            $test_category->save();
+            $name = "Freddy";
+            $test_author = new Author($name);
+            $test_author->save();
 
             //Act
             Author::deleteAll();
@@ -131,116 +127,115 @@
         function test_find()
         {
             //Arrange
-            $name = "Home Stuff";
-            $test_category = new Author($name);
-            $test_category->save();
+            $name = "Tommy";
+            $test_author = new Author($name);
+            $test_author->save();
 
-            $name2 = "Work Stuff";
-            $test_category2 = new Author($name2);
-            $test_category2->save();
+            $name2 = "Connor";
+            $test_author2 = new Author($name2);
+            $test_author2->save();
 
             //Act
-            $result = Author::find($test_category->getId());
+            $result = Author::find($test_author2->getId());
 
             //Assert
-            $this->assertEquals($test_category, $result);
+            $this->assertEquals($test_author2, $result);
         }
 
         function test_update()
         {
             //Arrange
-            $name = "Home Stuff";
-            $id = 1;
-            $test_category = new Author($name, $id);
-            $test_category->save();
+            $name = "asdfasdf";
+            $test_author = new Author($name);
+            $test_author->save();
 
-            $new_name = "Garden Stuff";
+            $new_name = "Poppy";
 
             //Act
-            $test_category->update($new_name);
+            $test_author->update($new_name);
 
             //Assert
-            $this->assertEquals($new_name, $test_category->getName());
+            $this->assertEquals($new_name, $test_author->getName());
 
         }
 
         function test_delete()
         {
             //Arrange
-            $name = "Home Stuff";
-            $test_category = new Author($name);
-            $test_category->save();
+            $name = "Zed";
+            $test_author = new Author($name);
+            $test_author->save();
 
-            $name2 = "Work Stuff";
-            $test_category2 = new Author($name2);
-            $test_category2->save();
+            $name2 = "Fred";
+            $test_author2 = new Author($name2);
+            $test_author2->save();
 
             //Act
-            $test_category->delete();
+            $test_author2->delete();
             $result = Author::getAll();
 
             //Assert
-            $this->assertEquals([$test_category2], $result);
+            $this->assertEquals([$test_author], $result);
         }
 
-        function testAddTask()
+        function testAddBook()
         {
             //Arrange
-            $name = "Work stuff";
-            $id = 1;
-            $test_category = new Author($name, $id);
-            $test_category->save();
-            $description = "File reports";
-            $id2 = 2;
-            $test_task = new Book($description, $id2);
-            $test_task->save();
+            $name = "Tim";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $book_name = "PHP";
+            $test_book = new Book($book_name);
+            $test_book->save();
+
             //Act
-            $test_category->addTask($test_task);
+            $test_author->addBook($test_book);
+            $result = $test_author->getBooks();
+
             //Assert
-            $this->assertEquals($test_category->getTasks(), [$test_task]);
+            $this->assertEquals([$test_book], $result);
         }
 
-        function testGetTasks()
+        function testGetBooks()
         {
             //Arrange
-            $name = "Home stuff";
-            $id = 1;
-            $test_category = new Author($name, $id);
-            $test_category->save();
+            $name = "Debra Burnheart";
+            $test_author = new Author($name);
+            $test_author->save();
 
-            $description = "Wash the dog";
-            $id2 = 2;
-            $test_task = new Book($description, $id2);
-            $test_task->save();
-            $description2 = "Take out the trash";
-            $id3 = 3;
-            $test_task2 = new Book($description2, $id3);
-            $test_task2->save();
+            $book_name = "How to wash the dog";
+            $test_book = new Book($book_name);
+            $test_book->save();
+
+            $book_name2 = "Taking out the trash";
+            $test_book2 = new Book($book_name2);
+            $test_book2->save();
             //Act
 
-            $test_category->addTask($test_task);
-            $test_category->addTask($test_task2);
+            $test_author->addBook($test_book);
+            $test_author->addBook($test_book2);
             //Assert
 
-            $this->assertEquals($test_category->getTasks(), [$test_task, $test_task2]);
+            $this->assertEquals($test_author->getBooks(), [$test_book, $test_book2]);
         }
 
-        function testDelete()
+        function testDeleteMore()
         {
             //Arrange
-            $name = "Work stuff";
-            $id = 1;
-            $test_category = new Author($name, $id);
-            $test_category->save();
-            $description = "File reports";
-            $id2 = 2;
-            $test_task = new Book($description, $id2);
-            $test_task->save();
+            $name = "Frenchie";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $book_name = "File reports";
+            $test_book = new Book($book_name);
+            $test_book->save();
+
             //Act
-            $test_category->addTask($test_task);
-            $test_category->delete();
+            $test_author->addBook($test_book);
+            $test_author->delete();
             //Assert
-            $this->assertEquals([], $test_task->getCategories());
+            $this->assertEquals([], $test_book->getAuthors());
 
 
         }

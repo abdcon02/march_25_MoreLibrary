@@ -86,13 +86,13 @@
 
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             $authors_of_book = array();
-                foreach($result as $author) {
-                    $name = $author['name'];
-                    $id = $author['id'];
-                    $new_author = new Author($name, $id);
-                    array_push($authors_of_book, $new_author);
-                }
+            foreach($result as $author) {
+                $name = $author['name'];
+                $id = $author['id'];
+                $new_author = new Author($name, $id);
+                array_push($authors_of_book, $new_author);
             }
+            
             return $authors_of_book;
         }
 

@@ -59,7 +59,7 @@
             $authors = Author::getAll();
             foreach($authors as $person){
                 if ($person->getId() == $search_id) {
-                    $found_author = $book;
+                    $found_author = $person;
                 }
             }
             return $found_author;
@@ -86,18 +86,18 @@
 
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             $books_by_author = array();
-                foreach($result as $book) {
-                    $name = $book['name'];
-                    $id = $book['id'];
-                    $new_book = new Book($name, $id);
-                    array_push($books_by_author, $new_book);
-                }
+            foreach($result as $book) {
+                $name = $book['name'];
+                $id = $book['id'];
+                $new_book = new Book($name, $id);
+                array_push($books_by_author, $new_book);
             }
+
             return $books_by_author;
         }
 
 
-        function addAuthor($book)
+        function addBook($book)
         {
             $GLOBALS['DB']->exec("INSERT INTO books_authors (author_id, book_id) VALUES ({$this->getId()}, {$book->getId()});");
         }
