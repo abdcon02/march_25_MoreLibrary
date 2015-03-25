@@ -15,7 +15,7 @@
         protected function tearDown()
         {
             Book::deleteAll();
-            Book::deleteAll();
+            Author::deleteAll();
         }
 
         function test_GetName()

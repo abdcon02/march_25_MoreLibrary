@@ -92,7 +92,7 @@
                 $new_author = new Author($name, $id);
                 array_push($authors_of_book, $new_author);
             }
-            
+
             return $authors_of_book;
         }
 
