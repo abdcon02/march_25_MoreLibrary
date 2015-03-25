@@ -33,6 +33,7 @@
             $statement = $GLOBALS['DB']->query("INSERT INTO books (name) VALUES ('{$this->getName()}') RETURNING id;");
             $result = $statement ->fetch(PDO::FETCH_ASSOC);
             $this->setId($result['id']);
+            $GLOBALS['DB']->exec("INSERT INTO copies (book_name, in_library) VALUES ('{$this->getName()}', true);");
         }
 
         static function getAll()
@@ -51,6 +52,7 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM books *;");
+            $GLOBALS['DB']->exec("DELETE FROM copies *;");
         }
 
         static function find($search_id)
@@ -75,6 +77,7 @@
         {
             $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
             $GLOBALS['DB']->exec("DELETE FROM books_authors WHERE book_id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM copies WHERE book_name = '{$this->getName()}';");
         }
 
         function getAuthors()

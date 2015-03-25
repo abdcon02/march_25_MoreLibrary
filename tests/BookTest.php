@@ -8,6 +8,7 @@
     require_once "src/Book.php";
     require_once "src/Book.php";
 
+
     $DB = new PDO('pgsql:host=localhost;dbname=library_test');
 
     class BookTest extends PHPUnit_Framework_TestCase
@@ -236,9 +237,8 @@
             $test_book->delete();
             //Assert
             $this->assertEquals([], $test_book->getAuthors());
-
-
         }
+
     }
 
 ?>
