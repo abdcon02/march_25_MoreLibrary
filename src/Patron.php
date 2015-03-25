@@ -102,7 +102,7 @@
                 WHERE patrons.id={$this->getId()};");
 
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            $copy_to_checkout = array();
+            $copies_checked_out = array();
             foreach($result as $book) {
                 $name = $book['book_name'];
                 array_push($copies_checked_out, $name);
@@ -112,13 +112,15 @@
         }
 
 // Run this method on a Book that has been created
-        function checkoutCopy($book)
+        function checkoutCopy($name)
         {
-            $books = $GLOBALS['DB']->exec("SELECT * From copies where book_name = '{$book->getName()}' AND in_library = true;");
+            $result = $GLOBALS['DB']->query("SELECT * From copies where book_name = '{$name}' AND in_library = true;");
+            $books = $result->fetchAll(PDO::FETCH_ASSOC);
+    
 
-            if(!empty($books)){
-                $copy = new Copy($book[0]['book_name'], $book[0]['id']);
-            }
+            $copy = new Copy($books[0]['book_name'], $books[0]['id']);
+
+
 
             $GLOBALS['DB']->exec("INSERT INTO checkout (patron_id, copy_id) VALUES ({$this->getId()}, {$copy->getId()});");
             $GLOBALS['DB']->exec("UPDATE copies SET in_library = false WHERE id = {$copy->getId()};");

@@ -6,6 +6,8 @@
     */
 
     require_once "src/Patron.php";
+    require_once "src/Book.php";
+    require_once "src/Copy.php";
 
     $DB = new PDO('pgsql:host=localhost;dbname=library_test');
 
@@ -14,6 +16,7 @@
         protected function tearDown()
         {
             Patron::deleteAll();
+            Book::deleteAll();
         }
 
         function test_SetName()
@@ -168,7 +171,33 @@
             $this->assertEquals([$test_patron], $result);
         }
 
-        
+// Create a new Book which will create a new copy of that book in our copy table.
+// Create a Patron
+// Use the checkout copy method to checkout that copy we made while making the book
+// Test result using the get checkouts method
+        //
+        function test_checkout()
+        {
+            //Arrange
+            $name = "php_book";
+            $test_book = new Book($name);
+            $test_book->save();
+
+            $patron_name = "Billy Bob";
+            $test_patron = new Patron($patron_name);
+            $test_patron->save();
+
+            //Act
+            $test_patron->checkoutCopy($name);
+            $result = $test_patron->getCheckouts();
+
+
+            //Assert
+            $this->assertEquals([$name], $result);
+        }
+
+
+
 
 
     }
