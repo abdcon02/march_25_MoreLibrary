@@ -5,11 +5,11 @@
         private $password;
         private $id;
 // Constructor of Class
-        function __construct($name, $password = "admin",$id = 0)
+        function __construct($name, $id = 0, $password = "admin")
         {
             $this->name = $name;
-            $this->password = $password;
             $this->id = $id;
+            $this->password = $password;
         }
 //Create getter and setter
         function getName()
@@ -54,7 +54,7 @@
                 $name = $person['name'];
                 $id = $person['id'];
                 $password = $person['password'];
-                $new_admin = new Book($name, $password, $id);
+                $new_admin = new Admin($name,$id,$password);
                 array_push($all_admin, $new_admin);
             }
             return $all_admin;
@@ -74,7 +74,7 @@
 
         function updatePassword($new_password)
         {
-            $GLOBALS['DB']->exec("UPDATE admin SET password = '{$new_name}' WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("UPDATE admin SET password = '{$new_password}' WHERE id = {$this->getId()};");
             $this->setPassword($new_password);
         }
 

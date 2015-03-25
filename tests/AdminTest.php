@@ -145,7 +145,7 @@
             $test_admin->updatePassword($new_password);
 
             //Assert
-            $this->assertEquals($new_name, $test_admin->getPassword());
+            $this->assertEquals($new_password, $test_admin->getPassword());
 
         }
 
