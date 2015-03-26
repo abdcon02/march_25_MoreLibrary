@@ -196,6 +196,74 @@
             $this->assertEquals([$name], $result);
         }
 
+// Create 2 books
+// Create a Patron
+// Checkout those 2 books with that patron
+// See all books that the patron has checked out
+
+        function testAllCheckouts()
+        {
+            //Arrang
+            $name = "Drupal_book";
+            $test_book = new Book($name);
+            $test_book->save();
+
+            $name2 = "Javascript_book";
+            $test_book2 = new Book($name2);
+            $test_book2->save();
+
+            $patron_name ="Master Connor";
+            $test_patron = new Patron($patron_name);
+            $test_patron->save();
+
+            //Action
+            $test_patron->checkoutCopy($name);
+            $test_patron->checkoutCopy($name2);
+            $result = $test_patron->getCheckouts();
+
+            //Assert
+            $this->assertEquals([$test_book->getName(),$test_book2->getName()], $result);
+
+        }
+
+// Create 1 book
+// Create the same book again
+// Create a Patron
+// Checkout 1 book
+// Test that there is one book checkouted in Copies.
+
+        function testCheckoutSingleCopy()
+        {
+            //Arrang
+            $name = "KidPlay_book";
+            $test_book = new Book($name);
+            $test_book->save();
+
+            $name2 = "KidPlay_book";
+            $test_book2 = new Book($name2);
+            $test_book2->save();
+            $book2Id = $test_book2->getId();
+
+            $patron_name = "tommy";
+            $test_patron = new Patron($patron_name);
+            $test_patron->save();
+
+            //Action
+            $test_patron->checkoutCopy($name);
+            $copies = Copy::getAll();
+
+            $result = $copies[0]->getIn_library();
+
+            //Assert
+            $this->assertEquals(true, $result);
+
+
+
+        }
+
+
+
+
 
 
 

@@ -63,6 +63,7 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM patrons *;");
+            $GLOBALS['DB']->exec("DELETE FROM checkout *;");
         }
 
         static function find($search_id)
@@ -92,6 +93,7 @@
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM patrons WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM checkout WHERE patron_id = {$this->getId()};");
         }
 
         function getCheckouts()
@@ -116,7 +118,7 @@
         {
             $result = $GLOBALS['DB']->query("SELECT * From copies where book_name = '{$name}' AND in_library = true;");
             $books = $result->fetchAll(PDO::FETCH_ASSOC);
-    
+
 
             $copy = new Copy($books[0]['book_name'], $books[0]['id']);
 
