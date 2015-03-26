@@ -1,7 +1,7 @@
 ##Developers
 Connor Abdelnoor & Tommy Bountham
 ##Date
-March 24 2015
+March 25 2015
 
 ##Description
 Library App for administrator or user.
@@ -9,7 +9,8 @@ Library App for administrator or user.
 
 ##Use and Editing
 To use the app, download the source code and run it in on your php server.
-You will need to create a psql database with the following tables and attributes:
+You will need to create a psql database. Open psql, create and enter a DB named library_test and run <br />
+\i library_test.sql
 
 
 To edit the app, download the source code and open it in your text editor. <br />
