@@ -191,7 +191,6 @@
             $test_patron->checkoutCopy($name);
             $result = $test_patron->getCheckouts();
 
-
             //Assert
             $this->assertEquals([$name], $result);
         }
@@ -285,13 +284,16 @@
 
 
            //Assert
-           $this->assertEquals($copies[0]->getIn_library(), true);
-
-
-
-
-
+           $this->assertEquals($copies[1]->getIn_library(), true);
         }
+
+//Create Book & Patron
+//Checkout Book
+
+        // function testDue_Date
+        // {
+        //
+        // }
 
     }
 

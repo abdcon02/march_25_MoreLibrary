@@ -114,18 +114,24 @@
         }
 
 // Run this method on a Book that has been created
+// Add a due date to checked out book
         function checkoutCopy($name)
         {
             $result = $GLOBALS['DB']->query("SELECT * From copies where book_name = '{$name}' AND in_library = true;");
             $books = $result->fetchAll(PDO::FETCH_ASSOC);
 
-
             $copy = new Copy($books[0]['book_name'], $books[0]['id']);
 
+            $day = rand(0,31);
+            $month = rand(0,12);
+            $due_date = 2015 . "-" . $month . "-" . $day;
 
 
             $GLOBALS['DB']->exec("INSERT INTO checkout (patron_id, copy_id) VALUES ({$this->getId()}, {$copy->getId()});");
             $GLOBALS['DB']->exec("UPDATE copies SET in_library = false WHERE id = {$copy->getId()};");
+            $GLOBALS['DB']->exec("UPDATE copies SET due_date = {$due_date} WHERE id = {$copy->getId()};");
+
+
         }
 // Return method runs on book which has a false in_library attribute in the copies table.
 
@@ -144,6 +150,12 @@
             }
             // var_dump($copy_to_return);
             $GLOBALS['DB']->exec("UPDATE copies SET in_library = true WHERE id = {$copy_to_return->getId()};");
+
+        }
+
+        function getCopyDueDate($name)
+        {
+            $copies
 
         }
 
