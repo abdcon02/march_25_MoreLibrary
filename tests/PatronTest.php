@@ -234,7 +234,7 @@
 
         function testCheckoutSingleCopy()
         {
-            //Arrang
+            //Arrange
             $name = "KidPlay_book";
             $test_book = new Book($name);
             $test_book->save();
@@ -256,17 +256,42 @@
 
             //Assert
             $this->assertEquals(true, $result);
+        }
+
+// Create two Books & a Patron
+// Check out the second book
+// Return that book
+// Check that all copies attribute in_library = true
+
+        function testReturnBook()
+        {
+           //Arrange
+           $name = "book_air";
+           $test_book = new Book($name);
+           $test_book->save();
+
+           $name2 = "no_book";
+           $test_book = new Book($name2);
+           $test_book->save();
+
+           $patron_name = "Tb";
+           $test_patron = new Patron($patron_name);
+           $test_patron->save();
+
+           //Action
+           $test_patron->checkoutCopy($name2);
+           $test_patron->returnCopy($name2);
+           $copies = Copy::getAll();
+
+
+           //Assert
+           $this->assertEquals($copies[0]->getIn_library(), true);
+
+
 
 
 
         }
-
-
-
-
-
-
-
 
     }
 

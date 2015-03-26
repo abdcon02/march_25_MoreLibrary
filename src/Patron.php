@@ -127,6 +127,25 @@
             $GLOBALS['DB']->exec("INSERT INTO checkout (patron_id, copy_id) VALUES ({$this->getId()}, {$copy->getId()});");
             $GLOBALS['DB']->exec("UPDATE copies SET in_library = false WHERE id = {$copy->getId()};");
         }
+// Return method runs on book which has a false in_library attribute in the copies table.
+
+// Get all copies with the same name and a false attribute in the in_libraries column.
+// Get the id of the first copy that matches
+// Update copy in copies table so in_library = true where the copies id is the one found above.
+        function returnCopy($name)
+        {
+            $copies = Copy::getAll();
+            // var_dump($copies);
+            $copy_to_return = null;
+            foreach($copies as $book){
+                if($book->getBookName() == $name && $book->getIn_library() == false){
+                    $copy_to_return = $book;
+                }
+            }
+            // var_dump($copy_to_return);
+            $GLOBALS['DB']->exec("UPDATE copies SET in_library = true WHERE id = {$copy_to_return->getId()};");
+
+        }
 
     }
 
