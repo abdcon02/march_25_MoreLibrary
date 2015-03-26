@@ -179,24 +179,6 @@
             return $due_date;
         }
 
-        // function get
-        // {
-        //     $statement = $GLOBALS['DB']->query("SELECT * FROM copies ORDER BY date DESC;");
-        //     $all_copies = array();
-        //     foreach($statement as $book){
-        //         $name = $book['book_name'];
-        //         $id = $book['id'];
-        //         $in = $book['in_library'];
-        //         $book_id = $book['book_id'];
-        //         $due_date = $book['due_date'];
-        //         $new_book = new Copy($name, $id, $in, $book_id, $due_date);
-        //         array_push($all_copies, $new_book);
-        //     }
-        //     return $all_copies;
-        // }
-
-
-
     }
 
 

@@ -310,6 +310,32 @@
             $this->assertEquals( true ,is_string($result));
         }
 
+        function testGetOverdues()
+        {
+            //Arrange
+            $name = "book_air";
+            $test_book = new Book($name);
+            $test_book->save();
+
+            $name2 = "no_book";
+            $test_book2 = new Book($name2);
+            $test_book2->save();
+
+            $patron_name = "Tb";
+            $test_patron = new Patron($patron_name);
+            $test_patron->save();
+
+            //Action
+            $test_patron->checkoutCopy($name2);
+            $test_patron->checkoutCopy($name);
+
+            $overdue = Copy::getAllOverdue();
+            //Assert
+            $this->assertEquals();
+        }
+
+
+
     }
 
 ?>

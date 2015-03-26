@@ -87,6 +87,56 @@
             }
             return $found_book;
         }
+// Get all copies Where in_library is false
+        // static function getAllCheckedOut($book_id)
+        // {
+        //   $allbooks = Copy::getAll();
+        //     foreach($allbooks  as $row)
+        //     {
+        //      $checkCopy = $GLOBALS["DB"]->query("SELECT * FROM copies WHERE book_id = '{$book_id}' AND in_library = false;");
+        //       foreach($checkCopy as $rows)
+        //         if($row['due_date'] == $row)
+        //     }
+        // }
+
+// Get all copies Where due_date is < todays date;
+        static function getAllOverdue()
+        {
+            date_default_timezone_set('America/Los_Angeles');
+            $today = date("Y/m/d");
+            $result = $GLOBALS["DB"]->query("SELECT * FROM copies WHERE due_date < '{$today}' AND in_library = false;");
+
+            $overdue = $result->fetchAll(PDO::FETCH_ASSOC);
+            $overdue_books = array();
+
+            $book_owners = array();
+
+            foreach($overdue as $book){
+                $book_name = $book['book_name'];
+                $due_date = $book['due_date'];
+                $in_library = $book['in_library'];
+                $id = $book['id'];
+                $book_id = $book['book_id'];
+                $new_overdue = new Copy($book_name, $id, $in_library, $book_id, $due_date);
+                // array_push($overdue_books, $new_overdue);
+
+                $query = $GLOBALS['DB']->query("SELECT patrons.* FROM
+                    copies JOIN checkout ON (copies.id = checkout.copy_id)
+                    JOIN patrons ON (checkout.patron_id = patrons.id)
+                    WHERE copies.id={$id};");
+                    $result = $query->fetch(PDO::FETCH_ASSOC);
+                    $patron = $result['name'];
+
+            $book_owners[$patron] = $new_overdue;
+
+
+            }
+            var_dump($book_owners);
+
+
+
+            return($book_owners);
+        }
 
     }
 
