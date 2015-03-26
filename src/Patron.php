@@ -161,17 +161,18 @@
 
         function getDueDate($search_id)
         {
+// Get all books checked out by patron
+
             $query = $GLOBALS['DB']->query("SELECT copies.* FROM
                 patrons JOIN checkout ON (patrons.id = checkout.patron_id)
                 JOIN copies ON (checkout.copy_id = copies.id)
                 WHERE patrons.id={$this->getId()};");
 
+// Check when that book is due
+
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
-        //    echo($search_id);
             $due_date = null;
             foreach($result as $book) {
-                // echo('Books');
-                // var_dump($book);
                 if($book['book_id'] == $search_id){
                     $due_date = $book['due_date'];
                 }

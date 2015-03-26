@@ -82,7 +82,7 @@
         {
             $GLOBALS['DB']->exec("DELETE FROM admin WHERE id = {$this->getId()};");
         }
-        
+
 
 
     }

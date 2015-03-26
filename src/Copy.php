@@ -87,17 +87,6 @@
             }
             return $found_book;
         }
-// Get all copies Where in_library is false
-        // static function getAllCheckedOut($book_id)
-        // {
-        //   $allbooks = Copy::getAll();
-        //     foreach($allbooks  as $row)
-        //     {
-        //      $checkCopy = $GLOBALS["DB"]->query("SELECT * FROM copies WHERE book_id = '{$book_id}' AND in_library = false;");
-        //       foreach($checkCopy as $rows)
-        //         if($row['due_date'] == $row)
-        //     }
-        // }
 
 // Get all copies Where due_date is < todays date;
         static function getAllOverdue()
@@ -118,7 +107,8 @@
                 $id = $book['id'];
                 $book_id = $book['book_id'];
                 $new_overdue = new Copy($book_name, $id, $in_library, $book_id, $due_date);
-                // array_push($overdue_books, $new_overdue);
+                
+// Get patrons who checked out the copy created above
 
                 $query = $GLOBALS['DB']->query("SELECT patrons.* FROM
                     copies JOIN checkout ON (copies.id = checkout.copy_id)
