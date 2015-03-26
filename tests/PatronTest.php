@@ -270,8 +270,8 @@
            $test_book->save();
 
            $name2 = "no_book";
-           $test_book = new Book($name2);
-           $test_book->save();
+           $test_book2 = new Book($name2);
+           $test_book2->save();
 
            $patron_name = "Tb";
            $test_patron = new Patron($patron_name);
@@ -279,7 +279,7 @@
 
            //Action
            $test_patron->checkoutCopy($name2);
-           $test_patron->returnCopy($name2);
+           $test_patron->returnCopy($test_book2->getId());
            $copies = Copy::getAll();
 
 
@@ -290,10 +290,25 @@
 //Create Book & Patron
 //Checkout Book
 
-        // function testDue_Date
-        // {
-        //
-        // }
+        function testDue_Date()
+        {
+            //Arrange
+            $name = "book_air";
+            $test_book = new Book($name);
+            $test_book->save();
+
+            $patron_name = "Tb";
+            $test_patron = new Patron($patron_name);
+            $test_patron->save();
+
+            //Action
+            $test_patron->checkoutCopy($name);
+            $result = $test_patron->getDueDate($test_book->getId());
+
+
+            //Assert
+            $this->assertEquals( true ,is_string($result));
+        }
 
     }
 

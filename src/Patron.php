@@ -129,7 +129,7 @@
 
             $GLOBALS['DB']->exec("INSERT INTO checkout (patron_id, copy_id) VALUES ({$this->getId()}, {$copy->getId()});");
             $GLOBALS['DB']->exec("UPDATE copies SET in_library = false WHERE id = {$copy->getId()};");
-            $GLOBALS['DB']->exec("UPDATE copies SET due_date = {$due_date} WHERE id = {$copy->getId()};");
+            $GLOBALS['DB']->exec("UPDATE copies SET due_date = '{$due_date}' WHERE id = {$copy->getId()};");
 
 
         }
@@ -138,26 +138,64 @@
 // Get all copies with the same name and a false attribute in the in_libraries column.
 // Get the id of the first copy that matches
 // Update copy in copies table so in_library = true where the copies id is the one found above.
-        function returnCopy($name)
+
+// get all the copy ids for matching book_names to name
+// for the copy id that exists in checkout, return the date for that copy id.
+//
+        function returnCopy($book_id)
         {
             $copies = Copy::getAll();
-            // var_dump($copies);
             $copy_to_return = null;
             foreach($copies as $book){
-                if($book->getBookName() == $name && $book->getIn_library() == false){
+                if($book->getBook_id() == $book_id && $book->getIn_library() == false){
+                    $book_id = $book->getId();
+
                     $copy_to_return = $book;
                 }
             }
-            // var_dump($copy_to_return);
             $GLOBALS['DB']->exec("UPDATE copies SET in_library = true WHERE id = {$copy_to_return->getId()};");
+            $GLOBALS['DB']->exec("UPDATE copies SET due_date = null WHERE id = {$copy_to_return->getId()};");
+
 
         }
 
-        function getCopyDueDate($name)
+        function getDueDate($search_id)
         {
-            $copies
+            $query = $GLOBALS['DB']->query("SELECT copies.* FROM
+                patrons JOIN checkout ON (patrons.id = checkout.patron_id)
+                JOIN copies ON (checkout.copy_id = copies.id)
+                WHERE patrons.id={$this->getId()};");
 
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        //    echo($search_id);
+            $due_date = null;
+            foreach($result as $book) {
+                // echo('Books');
+                // var_dump($book);
+                if($book['book_id'] == $search_id){
+                    $due_date = $book['due_date'];
+                }
+            }
+            return $due_date;
         }
+
+        // function get
+        // {
+        //     $statement = $GLOBALS['DB']->query("SELECT * FROM copies ORDER BY date DESC;");
+        //     $all_copies = array();
+        //     foreach($statement as $book){
+        //         $name = $book['book_name'];
+        //         $id = $book['id'];
+        //         $in = $book['in_library'];
+        //         $book_id = $book['book_id'];
+        //         $due_date = $book['due_date'];
+        //         $new_book = new Copy($name, $id, $in, $book_id, $due_date);
+        //         array_push($all_copies, $new_book);
+        //     }
+        //     return $all_copies;
+        // }
+
+
 
     }
 
